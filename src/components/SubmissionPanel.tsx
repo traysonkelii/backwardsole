@@ -4,6 +4,7 @@ import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import PopUpLogicContext from "../hooks/PopUpLogic/PopUpLogicContext";
 import { BackwardsoleGameObject, Rows } from "../model/BackwardsoleGameObject";
+import { WordBank } from "../model/WordBank";
 
 const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
   const {
@@ -80,8 +81,8 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
         ? JSON.parse(gameObjectString)
         : null;
 
-    setGuess("");
     if (guess.toLowerCase() === wordToGuess.toLowerCase()) {
+      setGuess("");
       setGameOver(true);
       gameIsOver(true);
       gameObject.gameOver = true;
@@ -89,12 +90,23 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
       gameObject.rows[gameObject.currentIndex].winningRow = true;
       localStorage.setItem("backwardsole", JSON.stringify(gameObject));
     } else {
-      rows[currentIndex].words.push(guess);
-      const newRows: Rows[] = [];
-      rows.forEach((row) => newRows.push(row));
-      if (gameObject) gameObject.rows = newRows;
-      setRows(newRows);
-      localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+      const existsInWord = WordBank.filter(
+        (x) => x.toLowerCase() === guess.toLowerCase()
+      );
+      if (existsInWord.length > 0) {
+        setGuess("");
+        rows[currentIndex].words.push(guess);
+        const newRows: Rows[] = [];
+        rows.forEach((row) => newRows.push(row));
+        if (gameObject) gameObject.rows = newRows;
+        setRows(newRows);
+        localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+      } else {
+        msg.rate = 1;
+        msg.voice = voice;
+        msg.text = "this word is not part of our list";
+        window.speechSynthesis.speak(msg);
+      }
     }
   };
 

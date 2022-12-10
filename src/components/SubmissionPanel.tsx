@@ -31,8 +31,6 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
   const [gameOver, setGameOver] = useState(gameState);
 
   const handleClickPlay = () => {
-    console.log(currentIndex);
-    console.log(gameOver);
     if (currentIndex >= 5) {
       setGameOver(true);
       gameIsOver(true);

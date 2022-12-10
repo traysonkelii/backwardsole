@@ -24,7 +24,6 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    console.log('Use effect called')
 
     const gameObjectString = localStorage.getItem("backwardsole");
     const gameObject: BackwardsoleGameObject =

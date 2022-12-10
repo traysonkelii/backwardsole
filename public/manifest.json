@@ -1,0 +1,26 @@
+{
+  "short_name": "Backwardsole",
+  "name": "Backwardsole",
+  "icons": [
+    {
+      "src": "backwardsole.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "backwardsole.svg",
+      "type": "image/svg_xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "backwardsole.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

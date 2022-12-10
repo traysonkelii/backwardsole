@@ -75,7 +75,7 @@ export const Modal = styled.div`
     padding: 10px 20px;
     border-radius: 5px;
     width: 300px;
-    height: 200px;
+    height: 400px;
     /* add styles that will only be applied when the screen is at least 768px wide */
   }
 `;

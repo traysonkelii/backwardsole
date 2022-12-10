@@ -34,7 +34,7 @@ const Header = () => {
         >
           <FaInfoCircle size={24} />
         </Icon>
-        <HeaderText>Backwardsole</HeaderText>
+        <HeaderText>Backwordsle</HeaderText>
         <Icon
           onClick={() => {
             setIsOpen(true);

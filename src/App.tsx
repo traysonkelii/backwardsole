@@ -31,7 +31,7 @@ function App() {
         ? JSON.parse(gameObjectString)
         : null;
     if (!gameObject) {
-      setTitle("Welcome to Backwardsole");
+      setTitle("Welcome to Backwordsle");
       setBody(
         <>
           <p>
@@ -66,7 +66,7 @@ function App() {
         }
       };
 
-      let toShare = "#Backwardsole: \n\n";
+      let toShare = "#Backwordsle: \n\n";
       gameObject.rows.forEach((row) => {
         if (row && row !== undefined && !row.isEnabled) toShare += "⬛";
         else if (row.winningRow) toShare += "🟩";
@@ -77,7 +77,7 @@ function App() {
       setHideCloseButton(true);
       setBody(
         <>
-          <p>The next backwardsole will be posted in: </p>
+          <p>The next backwordsle will be posted in: </p>
           <Timer hide={false} />
           <p>Today's Answer: {gameObject.answer}</p>
           <textarea

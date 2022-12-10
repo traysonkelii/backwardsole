@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import { BackwardsoleGameObject } from "../model/BackwardsoleGameObject";
@@ -33,7 +33,7 @@ const VoiceRateSelector = () => {
 
 const Container = styled.div`
   text-align:left;
-  @media (min-width: 320px) {
+  @media (max-width: 320px) {
     text-align: center;
     /* add styles that will only be applied when the screen is at least 768px wide */
   }

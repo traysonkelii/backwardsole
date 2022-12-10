@@ -21,7 +21,7 @@ const ControlPanelContainer = styled.div`
   gap: 20px;
   margin-top: 2%;
 
-  @media (min-width: 320px) {
+  @media (max-width: 320px) {
     display: block;
     text-align: center;
   }

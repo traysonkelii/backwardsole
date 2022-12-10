@@ -40,7 +40,7 @@ const Container = styled.div`
   flex-grow: 1;
   overflow: hidden;
   flex-direction: column;
-  @media (min-width: 320px) {
+  @media (max-width: 320px) {
     display: block;
     text-align: center;
     /* add styles that will only be applied when the screen is at least 768px wide */
@@ -62,7 +62,7 @@ const GameBoardContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  @media (min-width: 320px) {
+  @media only screen and (max-width: 600px) {
     display: block;
     text-align: center;
     max-width: 320px;
@@ -86,9 +86,9 @@ const RowStyle = styled.div<RowStyleProps>`
     display: none;
   }
 
-  @media (min-width: 320px) {
-    display: block;
+  @media only screen and (max-width: 600px) {
     height: 25px;
+    font-size: 12px;
     /* add styles that will only be applied when the screen is at least 768px wide */
   }
 `;

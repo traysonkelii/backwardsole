@@ -55,7 +55,7 @@ const VoiceSelect = () => {
 const Container = styled.div`
   text-align: left;
 
-  @media (min-width: 320px) {
+  @media (max-width: 320px) {
     text-align: center;
   }
 `;

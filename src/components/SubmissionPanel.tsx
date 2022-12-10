@@ -5,7 +5,7 @@ import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import PopUpLogicContext from "../hooks/PopUpLogic/PopUpLogicContext";
 import { BackwardsoleGameObject, Rows } from "../model/BackwardsoleGameObject";
 
-const SubmissionPanel = ({gameIsOver} : {gameIsOver: Function}) => {
+const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
   const {
     voice,
     rate,
@@ -30,30 +30,49 @@ const SubmissionPanel = ({gameIsOver} : {gameIsOver: Function}) => {
     gameObject && gameObject.gameOver ? gameObject.gameOver : false;
   const [gameOver, setGameOver] = useState(gameState);
 
-  const handleClick = () => {
+  const handleClickPlay = () => {
+    console.log(currentIndex);
+    console.log(gameOver);
     if (currentIndex >= 5) {
       setGameOver(true);
       gameIsOver(true);
-      gameObject.gameOver = gameOver;
+      gameObject.gameOver = true;
       gameObject.gameWon = false;
+      rows[currentIndex].isEnabled = false;
+      const newRows: {
+        words: string[];
+        isEnabled: boolean;
+        winningRow: boolean;
+      }[] = [];
+      rows.forEach((row) => newRows.push(row));
+      if (gameObject) {
+        gameObject.rows = newRows;
+        gameObject.currentIndex = currentIndex + 1;
+      }
+      setRows(newRows);
       localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+    } else {
+      msg.rate = rate;
+      msg.voice = voice;
+      msg.text = wordToGuess.split("").reverse().join("");
+      if (currentIndex <= 6) {
+        window.speechSynthesis.speak(msg);
+        rows[currentIndex].isEnabled = false;
+        const newRows: {
+          words: string[];
+          isEnabled: boolean;
+          winningRow: boolean;
+        }[] = [];
+        rows.forEach((row) => newRows.push(row));
+        if (gameObject) {
+          gameObject.rows = newRows;
+          gameObject.currentIndex = currentIndex + 1;
+        }
+        setRows(newRows);
+        setCurrentIndex(currentIndex + 1);
+        localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+      }
     }
-
-    msg.rate = rate;
-    msg.voice = voice;
-    msg.text = wordToGuess.split("").reverse().join("");
-    if (currentIndex < 5) window.speechSynthesis.speak(msg);
-
-    rows[currentIndex].isEnabled = false;
-    const newRows: { words: string[]; isEnabled: boolean; winningRow: boolean }[] = [];
-    rows.forEach((row) => newRows.push(row));
-    if (gameObject) {
-      gameObject.rows = newRows;
-      gameObject.currentIndex = currentIndex + 1;
-    }
-    setRows(newRows);
-    setCurrentIndex(currentIndex + 1);
-    localStorage.setItem("backwardsole", JSON.stringify(gameObject));
   };
 
   const handleSubmit = () => {
@@ -83,7 +102,7 @@ const SubmissionPanel = ({gameIsOver} : {gameIsOver: Function}) => {
 
   return (
     <SubmissionContainer hide={gameOver}>
-      <ListenButton handleClick={handleClick} />
+      <ListenButton handleClick={handleClickPlay} />
       <Submission
         placeholder="Guess Here"
         maxLength={5}

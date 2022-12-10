@@ -42,6 +42,11 @@ export const ModalContainer = styled.div`
   position: fixed;
   transition: 2s all;
   z-index: 2;
+  @media only screen and (max-width: 600px) {
+    display: block;
+    font-size: 12px;
+    /* add styles that will only be applied when the screen is at least 768px wide */
+  }
 `;
 
 export const Modal = styled.div`
@@ -54,7 +59,7 @@ export const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
+  width: 650px;
   height: 400px;
   padding: 20px;
   border-radius: 5px;
@@ -64,12 +69,13 @@ export const Modal = styled.div`
   }
   transition: 2s all;
 
-  @media (min-width: 320px) {
+  @media only screen and (max-width: 600px) {
     display: block;
     text-align: center;
     padding: 10px 20px;
     border-radius: 5px;
     width: 300px;
+    height: 200px;
     /* add styles that will only be applied when the screen is at least 768px wide */
   }
 `;

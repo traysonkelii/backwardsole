@@ -69,7 +69,7 @@ function App() {
 
       let toShare = "#Backwardsole: \n\n";
       gameObject.rows.forEach((row) => {
-        if (!row.isEnabled) toShare += "⬛";
+        if (row && row !== undefined && !row.isEnabled) toShare += "⬛";
         else if (row.winningRow) toShare += "🟩";
         else toShare += "⬜";
       });

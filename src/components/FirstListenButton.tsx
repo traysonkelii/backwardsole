@@ -15,7 +15,7 @@ const FirstListenButton = () => {
 const Container = styled.div`
   margin-bottom: 5px;
   margin-top: 15px;
-  @media (min-width: 320px) {
+  @media (max-width: 320px) {
     display: block;
     text-align: center;
     padding: 10px 20px;
@@ -74,7 +74,7 @@ const StartButtonStyled = styled.button<StartButtonProps>`
   }
   display: ${(props) => (props.visible ? "" : "none")};
 
-  @media (min-width: 320px) {
+  @media (max-width: 320px) {
     margin: 10px auto 0px auto;
   }
 

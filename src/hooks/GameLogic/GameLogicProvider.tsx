@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { BackwardsoleGameObject, getRandomWord } from "../../model/BackwardsoleGameObject";
+import { useState } from "react";
+import { BackwardsoleGameObject } from "../../model/BackwardsoleGameObject";
 import GameLogicContext from "./GameLogicContext";
 
 const GameLogicContextProvider = ({ children }: any) => {

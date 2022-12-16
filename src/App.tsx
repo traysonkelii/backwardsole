@@ -13,6 +13,7 @@ import {
   BackwardsoleGameObject,
   StartingGameObject,
 } from "./model/BackwardsoleGameObject";
+import { getGameObject, staticValues } from "./model/Constants";
 
 function App() {
   const { setWordToGuess } = useContext(GameLogicContext);
@@ -25,11 +26,8 @@ function App() {
 
   useEffect(() => {
 
-    const gameObjectString = localStorage.getItem("backwardsole");
-    const gameObject: BackwardsoleGameObject =
-      gameObjectString && JSON.parse(gameObjectString)
-        ? JSON.parse(gameObjectString)
-        : null;
+    const gameObject = getGameObject();
+
     if (!gameObject) {
       setTitle("Welcome to Backwordsle");
       setBody(
@@ -50,7 +48,7 @@ function App() {
       setIsOpen(true);
       const toStore = StartingGameObject;
       setWordToGuess(toStore.answer);
-      localStorage.setItem("backwardsole", JSON.stringify(toStore));
+      localStorage.setItem( staticValues.localStorageKey, JSON.stringify(toStore));
     } else if (gameObject.gameOver) {
       const copyToClipboard = async () => {
         if (textAreaRef.current !== null) {
@@ -78,7 +76,7 @@ function App() {
       setBody(
         <>
           <p>The next backwordsle will be posted in: </p>
-          <Timer hide={false} />
+          <Timer hide={false} setGameOver={setGameOver} setClose={setIsOpen} />
           <p>Today's Answer: {gameObject.answer}</p>
           <textarea
             ref={textAreaRef}
@@ -96,6 +94,8 @@ function App() {
         </>
       );
       setIsOpen(true);
+    } else {
+      setIsOpen(false);
     }
   }, [isOpen, textCopied, gameOver]);
 

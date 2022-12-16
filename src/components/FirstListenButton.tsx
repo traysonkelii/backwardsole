@@ -3,6 +3,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import { BackwardsoleGameObject } from "../model/BackwardsoleGameObject";
+import { getGameObject, staticValues } from "../model/Constants";
 
 const FirstListenButton = () => {
   return (
@@ -28,11 +29,7 @@ const Container = styled.div`
 const StartButton = () => {
   const { voice, rate, wordToGuess } = useContext(GameLogicContext);
   const [isVisible, setIsVisible] = useState(true);
-  const gameObjectString = localStorage.getItem("backwardsole");
-  const gameObject: BackwardsoleGameObject =
-    gameObjectString && JSON.parse(gameObjectString)
-      ? JSON.parse(gameObjectString)
-      : null;
+  const gameObject = getGameObject();
 
   useEffect(() => {
     if (gameObject && gameObject.playedFirstListen) setIsVisible(false);
@@ -46,7 +43,7 @@ const StartButton = () => {
     msg.text = wordToGuess.split("").reverse().join("");
     window.speechSynthesis.speak(msg);
     gameObject.playedFirstListen = true;
-    localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+    localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
   };
 
   return (

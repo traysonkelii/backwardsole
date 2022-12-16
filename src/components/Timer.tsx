@@ -1,22 +1,61 @@
 import React, { useState, useEffect } from "react";
-import { BackwardsoleGameObject } from "../model/BackwardsoleGameObject";
+import { BackwardsoleGameObject, StartingGameObject } from "../model/BackwardsoleGameObject";
+import {
+  getGameObject,
+  staticValues,
+  TwentyFourHoursMilli,
+} from "../model/Constants";
 import { WordBank } from "../model/WordBank";
 
 type TimerProps = {
   hide: boolean;
+  setGameOver: Function;
+  setClose: Function;
 };
 
 const Timer = (props: TimerProps) => {
   const [timeUntil6pm, setTimeUntil6pm] = useState<number | null>(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
+    const gameObject = getGameObject();
+
+    const oldGameTime = gameObject.currentGameTime
+      ? gameObject.currentGameTime
+      : null;
+
+    if (oldGameTime) {
+      console.log(oldGameTime)
+      if (new Date().getTime() - oldGameTime > TwentyFourHoursMilli) {
+        resetApplication(props.setClose, props.setGameOver);
+      } else {
+        const sixpm = new Date();
+        sixpm.setUTCHours(3);
+        sixpm.setUTCMinutes(0);
+        sixpm.setUTCSeconds(0);
+        const oldGameDate = new Date(oldGameTime);
+        const oldGameDay = oldGameDate.getDay();
+        const oldGameHour = oldGameDate.getHours();
+        const currentGameDay = sixpm.getDay();
+        const currentGameHour = sixpm.getHours();
+
+        if (oldGameDay === currentGameDay && oldGameHour < currentGameHour)
+          resetApplication(props.setClose, props.setGameOver);
+        else {
+          updateGame();
+        }
+      }
+    } else {
+      updateGame();
+    }
+  }, []);
+
+  const updateGame = () => {
     updateTimer();
     setInterval(updateTimer, 1000);
 
     const sixpm = new Date();
     const now = new Date();
-    sixpm.setUTCHours(18);
+    sixpm.setUTCHours(3);
     sixpm.setUTCMinutes(0);
     sixpm.setUTCSeconds(0);
 
@@ -25,14 +64,14 @@ const Timer = (props: TimerProps) => {
     }
 
     const timeUntil6pm = sixpm.getTime() - now.getTime();
-  
+
     setTimeout(resetApplication, timeUntil6pm);
-  }, []);
+  };
 
   const updateTimer = () => {
     const now = new Date();
     const sixpm = new Date();
-    sixpm.setUTCHours(18);
+    sixpm.setUTCHours(3);
     sixpm.setUTCMinutes(0);
     sixpm.setUTCSeconds(0);
 
@@ -60,14 +99,9 @@ const Timer = (props: TimerProps) => {
   );
 };
 
+function resetApplication(setClose: Function, setGameOver: Function) {
+  const gameObject = getGameObject();
 
-function resetApplication() {
-
-  const gameObjectString = localStorage.getItem("backwardsole");
-  const gameObject: BackwardsoleGameObject =
-    gameObjectString && JSON.parse(gameObjectString)
-      ? JSON.parse(gameObjectString)
-      : null;
   if (gameObject) {
     gameObject.guesses = [];
     gameObject.rows = [
@@ -86,10 +120,26 @@ function resetApplication() {
     const newWord = WordBank[randomNumber];
     gameObject.answer = newWord;
     gameObject.gameWon = false;
+    gameObject.currentGameTime = new Date().getTime();
 
-    localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+    localStorage.setItem(
+      staticValues.localStorageKey,
+      JSON.stringify(gameObject)
+    );
+  } else {
+    
+    localStorage.setItem(staticValues.localStorageKey, JSON.stringify(StartingGameObject))
   }
 
   // select a new word
+  window.location.reload();
 }
 export default Timer;
+
+/**
+ *
+ *
+ *  did they start a game yes => what time was it 5:00pm game restarts at 6:00pm
+ *
+ *
+ */

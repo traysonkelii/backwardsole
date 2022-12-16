@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { BackwardsoleGameObject } from "../../model/BackwardsoleGameObject";
+import { getGameObject } from "../../model/Constants";
 import GameLogicContext from "./GameLogicContext";
 
 const GameLogicContextProvider = ({ children }: any) => {
 
-  const gameObjectString = localStorage.getItem("backwardsole");
-  const gameObject: BackwardsoleGameObject =
-    gameObjectString && JSON.parse(gameObjectString)
-      ? JSON.parse(gameObjectString)
-      : null;
+  const gameObject = getGameObject();
 
   const emptyRows = [
     { words: [], isEnabled: true, winningRow: false },

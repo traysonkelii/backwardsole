@@ -2,16 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import { BackwardsoleGameObject } from "../model/BackwardsoleGameObject";
+import { getGameObject, staticValues } from "../model/Constants";
 
 const VoiceSelect = () => {
   const { setVoice, voice } = useContext(GameLogicContext);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[] | []>([]);
   const [nameToUse, setNameToUse] = useState("Alex");
-  const gameObjectString = localStorage.getItem("backwardsole");
-  const gameObject: BackwardsoleGameObject =
-    gameObjectString && JSON.parse(gameObjectString)
-      ? JSON.parse(gameObjectString)
-      : null;
+  const gameObject = getGameObject();
 
   useEffect(() => {
     const loadVoices = () => {
@@ -30,7 +27,7 @@ const VoiceSelect = () => {
     if (gameObject) {
       gameObject.voiceIndex = selectedIndex;
       gameObject.voiceName = voices[selectedIndex].name;
-      localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+      localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
     }
   };
 

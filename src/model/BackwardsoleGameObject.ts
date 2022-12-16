@@ -18,6 +18,7 @@ export type BackwardsoleGameObject = {
   gameOver: boolean;
   answer: string;
   gameWon: boolean;
+  currentGameTime: number;
 };
 
 export type Rows = {
@@ -45,4 +46,5 @@ export const StartingGameObject: BackwardsoleGameObject = {
   gameOver: false, // reset
   answer: getRandomWord(), //reset
   gameWon: false,
+  currentGameTime: new Date().getTime()
 };

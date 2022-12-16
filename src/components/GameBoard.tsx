@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
+import { getGameObject } from "../model/Constants";
 import FirstListenButton from "./FirstListenButton";
 
 const GameBoard = () => {

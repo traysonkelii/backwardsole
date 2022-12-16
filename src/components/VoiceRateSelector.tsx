@@ -2,21 +2,17 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import { BackwardsoleGameObject } from "../model/BackwardsoleGameObject";
+import { getGameObject, staticValues } from "../model/Constants";
 
 const VoiceRateSelector = () => {
   const { setRate, rate } = useContext(GameLogicContext);
-  const gameObjectString = localStorage.getItem("backwardsole");
-  const gameObject: BackwardsoleGameObject =
-    gameObjectString && JSON.parse(gameObjectString)
-      ? JSON.parse(gameObjectString)
-      : null;
-
+  const gameObject = getGameObject();
   const handleOnChange = (e:any) => {
 
     const rate = e.target.value;
     if (gameObject) gameObject.rate = rate;
     setRate(rate);
-    localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+    localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
   }
 
   return (

@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaRegPlayCircle } from "react-icons/fa";
 import styled from "styled-components";
 import GameLogicContext from "../hooks/GameLogic/GameLogicContext";
 import PopUpLogicContext from "../hooks/PopUpLogic/PopUpLogicContext";
 import { BackwardsoleGameObject, Rows } from "../model/BackwardsoleGameObject";
+import { getGameObject, staticValues } from "../model/Constants";
 import { WordBank } from "../model/WordBank";
 
 const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
@@ -21,11 +22,7 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
 
   const msg = new SpeechSynthesisUtterance();
   const [guess, setGuess] = useState("");
-  const gameObjectString = localStorage.getItem("backwardsole");
-  const gameObject: BackwardsoleGameObject =
-    gameObjectString && JSON.parse(gameObjectString)
-      ? JSON.parse(gameObjectString)
-      : null;
+  const gameObject = getGameObject();
 
   const gameState =
     gameObject && gameObject.gameOver ? gameObject.gameOver : false;
@@ -49,7 +46,7 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
         gameObject.currentIndex = currentIndex + 1;
       }
       setRows(newRows);
-      localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+      localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
     } else {
       msg.rate = rate;
       msg.voice = voice;
@@ -69,17 +66,13 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
         }
         setRows(newRows);
         setCurrentIndex(currentIndex + 1);
-        localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+        localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
       }
     }
   };
 
   const handleSubmit = () => {
-    const gameObjectString = localStorage.getItem("backwardsole");
-    const gameObject: BackwardsoleGameObject =
-      gameObjectString && JSON.parse(gameObjectString)
-        ? JSON.parse(gameObjectString)
-        : null;
+    const gameObject = getGameObject();
 
     if (guess.toLowerCase() === wordToGuess.toLowerCase()) {
       setGuess("");
@@ -88,7 +81,7 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
       gameObject.gameOver = true;
       gameObject.gameWon = true;
       gameObject.rows[gameObject.currentIndex].winningRow = true;
-      localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+      localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
     } else {
       const existsInWord = WordBank.filter(
         (x) => x.toLowerCase() === guess.toLowerCase()
@@ -100,7 +93,7 @@ const SubmissionPanel = ({ gameIsOver }: { gameIsOver: Function }) => {
         rows.forEach((row) => newRows.push(row));
         if (gameObject) gameObject.rows = newRows;
         setRows(newRows);
-        localStorage.setItem("backwardsole", JSON.stringify(gameObject));
+        localStorage.setItem(staticValues.localStorageKey, JSON.stringify(gameObject));
       } else {
         msg.rate = 1;
         msg.voice = voice;

@@ -29,26 +29,33 @@ function App() {
     const gameObject = getGameObject();
 
     if (!gameObject) {
+      setIsOpen(true);
       setTitle("Welcome to Backwordsle");
       setBody(
         <>
           <p>
-            A 5 letter word will be read in reverse and
-            you must guess the word
+            A 5 letter word will be read in reverse and you must guess the word
           </p>
           <p>
-            You have unlimited guesses, but you can only hear the
-            word 6 times
+            You have unlimited guesses, but you can only hear the word 6 times
           </p>
-          <p>
-            If you cannot figure out the word you lose
-          </p>
+          <p>If you cannot figure out the word you lose</p>
+          <button
+            onClick={() => {
+              const toStore = StartingGameObject;
+              setWordToGuess(toStore.answer);
+              localStorage.setItem(
+                staticValues.localStorageKey,
+                JSON.stringify(toStore)
+              );
+              setIsOpen(false)
+            }}
+          >
+            LETS GO
+          </button>
         </>
       );
-      setIsOpen(true);
-      const toStore = StartingGameObject;
-      setWordToGuess(toStore.answer);
-      localStorage.setItem( staticValues.localStorageKey, JSON.stringify(toStore));
+      setHideCloseButton(true);
     } else if (gameObject.gameOver) {
       const copyToClipboard = async () => {
         if (textAreaRef.current !== null) {
@@ -106,13 +113,18 @@ function App() {
       <GameBoard />
       <SubmissionPanel gameIsOver={setGameOver} />
       <PopUp />
-      <TextCopiedToast isVisible={textCopied} setIsVisible={setTextCopied}/>
+      <TextCopiedToast isVisible={textCopied} setIsVisible={setTextCopied} />
     </Container>
   );
 }
 
-const TextCopiedToast = ({ isVisible, setIsVisible }: { isVisible: boolean, setIsVisible: Function }) => {
-
+const TextCopiedToast = ({
+  isVisible,
+  setIsVisible,
+}: {
+  isVisible: boolean;
+  setIsVisible: Function;
+}) => {
   useEffect(() => {
     if (isVisible) {
       setTimeout(() => {
